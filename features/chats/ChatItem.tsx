@@ -1,14 +1,15 @@
+import { Chat } from "@/data/chats"
 import Image from "next/image"
 
 
 
-const ChatItem = () => {
+const ChatItem = ({id, name, avatar, createdAt, updatedAt, type, lastMessage}: Chat) => {
   return (
     <div className="flex gap-2 py-3 px-3 cursor-pointer">
-      <Image src="/avatar.svg" alt="avatar" width={48} height={48} className="rounded-full" />
+      <Image src={avatar || ""} alt="avatar" width={56} height={56} className="rounded-full" />
       <div>
-        <p>Name</p>
-            <span>I am texting u...</span>
+        <p className="text-2xl font-bold">{name}</p>
+            <span>{lastMessage}</span>
       </div>
       
     </div>

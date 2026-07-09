@@ -1,3 +1,5 @@
+import { getMessagesForChatByUsername } from "@/services/messageService";
+import Message from "@/ui/Message";
 
 
 type PageProps = {
@@ -6,12 +8,28 @@ type PageProps = {
 
 const Chat = async ({params} : PageProps) => {
 
-    const { id } = await params
+  const { id } = await params
+  const messages = await getMessagesForChatByUsername(id)
+  console.log(id)
 
-    console.log(id)
   return (
-    <div className="border w-full">
-      test {id}
+    <div className="border w-full py-3 px-5">
+      <p className="text-4xl">{id}</p>
+      <div className="messages flex flex-col mt-30 px-15 ">
+        {messages.map(el => (
+          <Message
+            key={el.id}
+            id={el.id}
+            chatId={el.chatId}
+            updatedAt={el.updatedAt}
+            text={el.text}
+            createdAt={el.createdAt}
+            senderId={el.senderId}
+          />
+        ))}
+          
+         
+      </div>
     </div>
   )
 }
