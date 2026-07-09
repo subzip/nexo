@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "@/ui/Header";
+import ChatList from "@/features/chats/ChatsList";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +29,17 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <div className="dark:bg-black ml-70 mr-70">
+          <Header/>
+          <main className="flex gap-12 mt-8">
+            <ChatList/>
+            {children}
+          </main>
+        </div>
+        
+        
+      </body>
     </html>
   );
 }
