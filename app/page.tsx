@@ -1,16 +1,21 @@
-import ChatList from "@/features/chats/ChatsList";
-import Header from "@/ui/Header";
+import ChatList from '@/features/chats/ChatsList'
+import Header from '@/ui/Header'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-export default function Home() {
+export default async function Home() {
+  const cookieStore = await cookies()
+  const user = cookieStore.get('user')
+
+  if (!user) redirect('/login')
+
   return (
     <div className="dark:bg-black ml-70 mr-70">
-      {/* <Header/>
+      <Header />
       <main className="flex gap-12 mt-8">
-        <ChatList/>
-        <div className="border w-full">
-          chat
-        </div>
-      </main> */}
+        <ChatList />
+        <div className="border w-full"></div>
+      </main>
     </div>
-  );
+  )
 }

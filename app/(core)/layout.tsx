@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import './globals.css'
+import '@/app/globals.css'
 import Header from '@/ui/Header'
 import ChatList from '@/features/chats/ChatsList'
 
@@ -25,11 +25,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
+    <div className="dark:bg-black ml-70 mr-70">
+      <Header />
+      <main className="flex gap-12 mt-8">
+        <ChatList />
+        {children}
+      </main>
+    </div>
   )
 }
