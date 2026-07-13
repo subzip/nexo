@@ -1,4 +1,4 @@
-import { getMessagesForChatByUsername } from "@/services/messageService";
+import { getChatMessages } from "@/services/message.api";
 import Message from "@/ui/Message";
 
 
@@ -9,8 +9,8 @@ type PageProps = {
 const Chat = async ({params} : PageProps) => {
 
   const { id } = await params
-  const messages = await getMessagesForChatByUsername(id)
-  console.log(id)
+  const messages = await getChatMessages(id, "subzip")
+
 
   return (
     <div className="border w-full py-3 px-5">

@@ -1,6 +1,6 @@
 
 
-export type User = {
+export type User = { //db
     id: number;
     username: string;
     password: string;
@@ -28,7 +28,7 @@ export const users: Array<User> = [
     },
     {
         id: 3,
-        username: 'fsdfsd',
+        username: 'dsds',
         password: '123',
         avatar: '/avatar.svg',
         createdAt: 18543885,

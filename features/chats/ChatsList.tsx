@@ -1,22 +1,21 @@
 import Link from "next/link"
 import ChatItem from "./ChatItem"
-import { getUserChats } from "@/services/chatService"
+import { getChatPreview } from "@/services/chat.api"
 
 const ChatList = async () => {
-  const usersList = await getUserChats(1)
-
+  const usersList = await getChatPreview('dc46cf3f-5a80-465d-965f-a5ebdbd995b3')
+  
   return (
     <div className="border w-[25%] flex flex-col min-h-[80vh]">
       {usersList.map(el => (
-        <Link key={el.id} href={`/${el.name}`}>
+        <Link key={el.chatId} href={`/${el.title}`}>
           <ChatItem 
-            id={el.id}
-            name={el.name}
+            chatId={el.chatId}
+            title={el.title}
             avatar={el.avatar}
-            type={el.type}
             lastMessage={el.lastMessage}
-            createdAt={el.createdAt}
-            updatedAt={el.updatedAt}
+            lastMessageTime={el.lastMessageTime}
+            unreadCount={el.unreadCount}
           />
           </Link>
       ))}

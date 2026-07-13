@@ -1,6 +1,6 @@
 
 
-export type ChatMembers = {
+export type ChatMembers = { //db
     id: number;
     userId: number;
     chatId: number;

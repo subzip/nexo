@@ -1,15 +1,19 @@
-import { Chat } from "@/data/chats"
+import { ChatPreview } from "@/data/chatPreview"
 import Image from "next/image"
 
 
 
-const ChatItem = ({id, name, avatar, createdAt, updatedAt, type, lastMessage}: Chat) => {
+const ChatItem = ({chatId, title, avatar, lastMessage, lastMessageTime, unreadCount}: ChatPreview) => {
   return (
     <div className="flex gap-2 py-3 px-3 cursor-pointer">
       <Image src={avatar || ""} alt="avatar" width={56} height={56} className="rounded-full" />
       <div>
-        <p className="text-2xl font-bold">{name}</p>
-            <span>{lastMessage}</span>
+        <p className="text-2xl font-bold">{title}</p>
+        <div className="flex justify-between w-40">
+            <span>{lastMessage?.text.slice(0, 10)}{(lastMessage?.text.length || "".length )> 10? "..." : ''}</span>
+            <span className="bg-purple-800 rounded-full px-2">{unreadCount}</span>
+        </div>
+            
       </div>
       
     </div>
