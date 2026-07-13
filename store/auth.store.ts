@@ -1,1 +1,23 @@
-import { create } from "zustand"
+import { create } from 'zustand'
+
+type User = {
+  id: string
+  username: string
+  avatar: string
+}
+
+type AuthStore = {
+  user: User | null
+  setUser: (user: User) => void
+  logout: () => void
+}
+
+export const useAuthStore = create<AuthStore>((set) => ({
+  user: null,
+  setUser: (user) => {
+    set({ user })
+  },
+  logout: () => {
+    set({ user: null })
+  },
+}))
