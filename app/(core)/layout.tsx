@@ -25,9 +25,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="dark:bg-black ml-70 mr-70">
+    <div className="dark:bg-black ml-5  flex flex-col h-dvh">
       <Header />
-      <main className="flex gap-12 mt-8">
+      <main className="flex gap-12 flex-1 min-h-0">
         <ChatList />
         {children}
       </main>
