@@ -1,11 +1,10 @@
 'use client'
 
-import { Input } from '@/components/ui/input'
 import InputMessage from '@/ui/InputMessage'
 
 const MessageInput = () => {
   return (
-    <div className="border flex mt-auto ml-13 mr-13 p-3 justify-between items-center">
+    <div className="border absolute bottom-0 mb-5 w-[45%] flex justify-center left-1/2 -translate-x-1/6  p-1  rounded-full bg-gray-800">
       <InputMessage />
     </div>
   )
