@@ -1,7 +1,11 @@
 import { sendMessage } from '@/services/message.service'
 import React, { useEffect, useRef, useState } from 'react'
 
-const InputMessage = () => {
+type Props = {
+  userId: string
+}
+
+const InputMessage = ({ userId }: Props) => {
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState('')
   const [containterHeight, setContainerHeight] = useState(0)
@@ -31,7 +35,7 @@ const InputMessage = () => {
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault()
-            sendMessage(text)
+            sendMessage(text, userId)
             setText('')
           }
         }}
@@ -39,7 +43,7 @@ const InputMessage = () => {
       <div
         className="flex bg-purple-900 px-2.5 py-1 rounded-full cursor-pointer "
         onClick={() => {
-          sendMessage(text)
+          sendMessage(text, userId)
           setText('')
         }}
       >

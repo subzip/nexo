@@ -1,9 +1,12 @@
 import { getChatPreview } from '@/services/chat.api'
 
 import ChatListClient from './ChatListClient'
+import { cookies } from 'next/headers'
 
 const ChatList = async () => {
-  const usersList = await getChatPreview('dc46cf3f-5a80-465d-965f-a5ebdbd995b3')
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('auth') || { value: '' }
+  const usersList = await getChatPreview(userId.value)
 
   return <ChatListClient usersList={usersList} />
 }

@@ -1,16 +1,10 @@
-// {
-//         id: 2,
-//         chatId: 1,
-//         senderId: 2,
-//         text: "Привет!",
-//         createdAt: 1710000002,
-//         updatedAt: 1710000002
-//     },
-
 import { MessageType } from '@/data/messages'
 
-const Message = ({ text, createdAt, senderId }: MessageType) => {
-  const userId = 'dc46cf3f-5a80-465d-965f-a5ebdbd995b3'
+interface Props extends MessageType {
+  userId: string
+}
+
+const Message = ({ text, createdAt, senderId, userId }: Props) => {
   const time = new Intl.DateTimeFormat('ru-RU', {
     hour: '2-digit',
     minute: '2-digit',
