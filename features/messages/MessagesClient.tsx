@@ -1,15 +1,17 @@
 'use client'
 
 import { MessageType } from '@/data/messages'
+import { User } from '@/data/users'
 import { useMessageStore } from '@/store/message.store'
 import Message from '@/ui/Message'
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 
 type Props = {
   messages: MessageType[]
+  user: User | null
 }
 
-const MessagesClient = ({ messages }: Props) => {
+const MessagesClient = ({ messages, user }: Props) => {
   const msgRef = useRef<HTMLDivElement>(null)
   const chatId = messages.length !== 0 ? messages[0].chatId : ''
   const setCurrentChatId = useMessageStore((state) => state.setCurrentChatId)
@@ -31,7 +33,7 @@ const MessagesClient = ({ messages }: Props) => {
   return (
     <div
       className="messages 
-      flex flex-col mt-10 px-15 pr-57.5 pl-61 pb-12 scrollbar-thin scrollbar-thumb-slate-400 
+      flex flex-col mt-10 px-15 pr-57.5 pl-62.5 pb-12 scrollbar-thin scrollbar-thumb-slate-400 
       scrollbar-track-slate-100 scrollbar-thumb-rounded-full hover:scrollbar-thumb-slate-500
       flex-1 overflow-y-auto min-h-0 scrollbar-gutter-stable "
     >
@@ -44,6 +46,7 @@ const MessagesClient = ({ messages }: Props) => {
           text={el.text}
           createdAt={el.createdAt}
           senderId={el.senderId}
+          userId={user?.id || ''}
         />
       ))}
       <div ref={msgRef} />

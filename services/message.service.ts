@@ -1,8 +1,7 @@
 import { useMessageStore } from '@/store/message.store'
 import { createMessage } from './message.api'
 
-export const sendMessage = async (text: string) => {
-  const senderId = 'dc46cf3f-5a80-465d-965f-a5ebdbd995b3'
+export const sendMessage = async (text: string, senderId: string) => {
   const chatId = useMessageStore.getState().currentChatId || ''
 
   const message = {
