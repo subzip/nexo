@@ -10,7 +10,7 @@ export type MessageType = {
 
 export type MessageSend = {
   chatId: string
-  senderId: string
+  //senderId: string
   text: string
 }
 

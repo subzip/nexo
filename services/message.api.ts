@@ -13,7 +13,9 @@ export const getChatMessages = async (
   return response.json()
 }
 
-export const createMessage = async (message: MessageSend) => {
+export const createMessage = async (
+  message: MessageSend
+): Promise<MessageType | null> => {
   const response = await fetch(`http://localhost:3000/api/messages`, {
     method: 'POST',
     body: JSON.stringify(message),

@@ -1,15 +1,13 @@
-import { MessageType } from "./messages";
-
+import { MessageType } from './messages'
 
 export type ChatPreview = {
-    chatId: string;
-    title: string | null | undefined;
-    avatar: string | null | undefined;
-    lastMessage: MessageType | null;
-    lastMessageTime: Date;
-    unreadCount: number;
+  chatId: string
+  title: string
+  avatar: string | null | undefined
+  lastMessage: MessageType | null
+  lastMessageTime: Date
+  unreadCount: number
 }
-
 
 // export const chatPreviews: Array<ChatPreview> = [
 //     {

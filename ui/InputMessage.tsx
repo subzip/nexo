@@ -35,7 +35,7 @@ const InputMessage = ({ userId }: Props) => {
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault()
-            sendMessage(text, userId)
+            sendMessage(text)
             setText('')
           }
         }}
@@ -43,7 +43,7 @@ const InputMessage = ({ userId }: Props) => {
       <div
         className="flex bg-purple-900 px-2.5 py-1 rounded-full cursor-pointer "
         onClick={() => {
-          sendMessage(text, userId)
+          sendMessage(text)
           setText('')
         }}
       >

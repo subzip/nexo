@@ -37,6 +37,7 @@ const Login = () => {
       />
       <div className="bg-purple-950 border flex justify-center items-center w-[30vw] h-fit">
         <button
+          className="w-full cursor-pointer"
           onClick={async () => {
             if (password.length !== 0 && login.length !== 0) {
               const user = await loginService(login, password)
