@@ -15,12 +15,12 @@ export const login = async (username: string, password: string) => {
   return null
 }
 
-export const getMe = async (userId: string): Promise<User | null> => {
+export const getMe = async (sessionId: string): Promise<User | null> => {
   const response = await fetch(`http://localhost:3000/api/auth/me`, {
     method: 'POST',
     credentials: 'include',
     body: JSON.stringify({
-      userId,
+      sessionId,
     }),
   })
 

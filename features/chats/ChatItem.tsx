@@ -1,7 +1,7 @@
-import { ChatPreview } from '@/data/chatPreview'
+import { ChatPreviewStore } from '@/store/chat.store'
 import Image from 'next/image'
 
-interface Props extends ChatPreview {
+interface Props extends ChatPreviewStore {
   setCurrentChatId: (chatId: string) => void
 }
 
@@ -30,8 +30,8 @@ const ChatItem = ({
         <p className="text-2xl font-bold">{title}</p>
         <div className="flex justify-between w-40">
           <span>
-            {lastMessage?.text.slice(0, 10)}
-            {(lastMessage?.text.length || ''.length) > 10 ? '...' : ''}
+            {lastMessage?.slice(0, 10)}
+            {(lastMessage?.length || ''.length) > 10 ? '...' : ''}
           </span>
           <span className="bg-purple-800 rounded-full px-2">{unreadCount}</span>
         </div>

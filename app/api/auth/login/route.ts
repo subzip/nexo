@@ -1,4 +1,4 @@
-import { findUser } from '@/server/services/auth.service'
+import { createSession, findUser } from '@/server/services/auth.service'
 import { cookies } from 'next/headers'
 
 export async function POST(req: Request) {
@@ -11,7 +11,9 @@ export async function POST(req: Request) {
 
     const cookieStore = await cookies()
 
-    cookieStore.set('auth', response.id, {
+    const session = await createSession(response.id)
+
+    cookieStore.set('auth', session.id, {
       httpOnly: true,
       secure: false,
       sameSite: 'lax',

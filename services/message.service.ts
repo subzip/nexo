@@ -1,12 +1,12 @@
 import { useMessageStore } from '@/store/message.store'
 import { createMessage } from './message.api'
+import { useChatPreviewStore } from '@/store/chat.store'
 
-export const sendMessage = async (text: string, senderId: string) => {
+export const sendMessage = async (text: string) => {
   const chatId = useMessageStore.getState().currentChatId || ''
 
   const message = {
     chatId,
-    senderId,
     text,
   }
 
@@ -18,4 +18,7 @@ export const sendMessage = async (text: string, senderId: string) => {
   }
 
   useMessageStore.getState().addMessage(chatId, response)
+  useChatPreviewStore
+    .getState()
+    .updateLastMessage(chatId, response.text, response.createdAt)
 }

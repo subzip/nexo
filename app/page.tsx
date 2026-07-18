@@ -5,11 +5,9 @@ import { redirect } from 'next/navigation'
 
 export default async function Home() {
   const cookieStore = await cookies()
-  const userId = cookieStore.get('auth')
+  const sessionId = cookieStore.get('auth')
 
-  console.log(userId)
-
-  if (!userId) redirect('/login')
+  if (!sessionId) redirect('/login')
 
   return (
     <div className="dark:bg-black ml-70 mr-70">
