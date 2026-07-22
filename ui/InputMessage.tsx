@@ -6,6 +6,7 @@ type Props = {
 }
 
 const InputMessage = ({ userId }: Props) => {
+  const socketRef = useRef<WebSocket | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState('')
   const [containterHeight, setContainerHeight] = useState(0)
@@ -20,6 +21,17 @@ const InputMessage = ({ userId }: Props) => {
     textarea.style.height = `${textarea.scrollHeight}px`
     setContainerHeight(textarea.scrollHeight)
   }, [text])
+
+  useEffect(() => {
+    socketRef.current = new WebSocket('ws://localhost:8080')
+    socketRef.current.onopen = (e) => {
+      console.log(e)
+      socketRef.current?.send('hello')
+    }
+    socketRef.current.onmessage = (event) => {
+      console.log(event.data)
+    }
+  }, [])
 
   return (
     <div
@@ -37,6 +49,7 @@ const InputMessage = ({ userId }: Props) => {
             e.preventDefault()
             sendMessage(text)
             setText('')
+            socketRef.current?.send(text)
           }
         }}
       />
