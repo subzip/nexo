@@ -1,11 +1,13 @@
-import { sendMessage } from '@/services/message.service'
+import { connectToWS } from '@/services/auth.service'
+import { addMessageToStore, sendMessage } from '@/services/message.service'
 import React, { useEffect, useRef, useState } from 'react'
 
 type Props = {
-  userId: string
+  userId?: string
+  sessionId: string
 }
 
-const InputMessage = ({ userId }: Props) => {
+const InputMessage = ({ sessionId }: Props) => {
   const socketRef = useRef<WebSocket | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState('')
@@ -24,12 +26,13 @@ const InputMessage = ({ userId }: Props) => {
 
   useEffect(() => {
     socketRef.current = new WebSocket('ws://localhost:8080')
-    socketRef.current.onopen = (e) => {
-      console.log(e)
-      socketRef.current?.send('hello')
-    }
+
+    connectToWS(socketRef, sessionId)
+
     socketRef.current.onmessage = (event) => {
-      console.log(event.data)
+      const message = JSON.parse(event.data)
+      addMessageToStore(message.data)
+      console.log('msg got', message)
     }
   }, [])
 
@@ -47,16 +50,15 @@ const InputMessage = ({ userId }: Props) => {
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault()
-            sendMessage(text)
+            sendMessage(text, socketRef)
             setText('')
-            socketRef.current?.send(text)
           }
         }}
       />
       <div
         className="flex bg-purple-900 px-2.5 py-1 rounded-full cursor-pointer "
         onClick={() => {
-          sendMessage(text)
+          sendMessage(text, socketRef)
           setText('')
         }}
       >

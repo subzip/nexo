@@ -10,10 +10,10 @@ type PageProps = {
 
 const Chat = async ({ params }: PageProps) => {
   const cookieStore = await cookies()
-  const userId = cookieStore.get('auth')?.value || ''
+  const sessionId = cookieStore.get('auth')?.value || ''
   const { id } = await params
   const username = id.slice(3)
-  const me = await getMe(userId)
+  const me = await getMe(sessionId)
 
   console.log(me)
 
@@ -23,7 +23,7 @@ const Chat = async ({ params }: PageProps) => {
     <div className="border w-full py-3 pl-5 flex flex-col h-full flex-1 min-h-0">
       <p className="text-4xl">{username}</p>
       <MessagesClient messages={messages} user={me} />
-      <MessageInput user={me} />
+      <MessageInput user={me} sessionId={sessionId} />
     </div>
   )
 }

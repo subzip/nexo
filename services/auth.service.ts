@@ -15,3 +15,21 @@ export const getCurrentUser = async (userId: string) => {
 
   return response
 }
+
+export const connectToWS = async (
+  socketRef: React.RefObject<WebSocket | null>,
+  sessionId: string
+) => {
+  if (socketRef.current === null) return
+  socketRef.current.onopen = (e) => {
+    console.log(e)
+    socketRef.current?.send(
+      JSON.stringify({
+        type: 'auth',
+        data: {
+          sessionId,
+        },
+      })
+    )
+  }
+}
