@@ -35,7 +35,8 @@ export const getChatPreviews = async (
 
     return {
       chatId: chat.id,
-      title: chat.type === 'direct' ? otherUser?.user.username : chat.name,
+      title:
+        (chat.type === 'direct' ? otherUser?.user.username : chat.name) || '',
       avatar: chat.type === 'direct' ? otherUser?.user.avatar : chat.avatar,
       lastMessage: chat.messages[0] ?? null,
       lastMessageTime: chat.messages[0].createdAt ?? chat.updatedAt,
@@ -91,4 +92,13 @@ export const getChatMessages = async (username1: string, username2: string) => {
   if (!chat) return []
 
   return chat.messages
+}
+
+export const getParticipants = async (chatId: string) => {
+  const participants = await prisma.chatParticipants.findMany({
+    where: {
+      chatId,
+    },
+  })
+  return participants
 }

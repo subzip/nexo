@@ -1,5 +1,5 @@
 import { User } from '@/data/users'
-import { getMe, login } from './auth.api'
+import { getMe, login } from '../api/auth.api'
 
 export const loginService = async (
   username: string,
@@ -14,4 +14,22 @@ export const getCurrentUser = async (userId: string) => {
   const response = await getMe(userId)
 
   return response
+}
+
+export const authWS = async (
+  socketRef: React.RefObject<WebSocket | null>,
+  sessionId: string
+) => {
+  if (socketRef.current === null) return
+  socketRef.current.onopen = (e) => {
+    console.log(e)
+    socketRef.current?.send(
+      JSON.stringify({
+        type: 'auth',
+        data: {
+          sessionId,
+        },
+      })
+    )
+  }
 }
