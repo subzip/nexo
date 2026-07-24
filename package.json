@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently \"pnpm dev:next\" \"pnpm dev:ws\"",
     "dev:next": "next dev",
-    "dev:ws": "tsx --env-file=.env websocket/websocket.ts",
+    "dev:ws": "tsx --env-file=.env websocket/index.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

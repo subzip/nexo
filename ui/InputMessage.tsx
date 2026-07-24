@@ -1,4 +1,4 @@
-import { connectToWS } from '@/services/auth.service'
+import { authWS } from '@/services/auth.service'
 import { addMessageToStore, sendMessage } from '@/services/message.service'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -27,7 +27,7 @@ const InputMessage = ({ sessionId }: Props) => {
   useEffect(() => {
     socketRef.current = new WebSocket('ws://localhost:8080')
 
-    connectToWS(socketRef, sessionId)
+    authWS(socketRef, sessionId)
 
     socketRef.current.onmessage = (event) => {
       const message = JSON.parse(event.data)

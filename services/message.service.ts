@@ -1,5 +1,5 @@
 import { useMessageStore } from '@/store/message.store'
-import { createMessage } from './message.api'
+import { createMessage } from '../api/message.api'
 import { useChatPreviewStore } from '@/store/chat.store'
 import { MessageType } from '@/data/messages'
 

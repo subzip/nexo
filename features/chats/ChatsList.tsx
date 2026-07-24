@@ -1,8 +1,8 @@
-import { getChatPreview } from '@/services/chat.api'
+import { getChatPreview } from '@/api/chat.api'
 
 import ChatListClient from './ChatListClient'
 import { cookies } from 'next/headers'
-import { getMe } from '@/services/auth.api'
+import { getMe } from '@/api/auth.api'
 
 const ChatList = async () => {
   const cookieStore = await cookies()

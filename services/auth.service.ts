@@ -1,5 +1,5 @@
 import { User } from '@/data/users'
-import { getMe, login } from './auth.api'
+import { getMe, login } from '../api/auth.api'
 
 export const loginService = async (
   username: string,
@@ -16,7 +16,7 @@ export const getCurrentUser = async (userId: string) => {
   return response
 }
 
-export const connectToWS = async (
+export const authWS = async (
   socketRef: React.RefObject<WebSocket | null>,
   sessionId: string
 ) => {

@@ -10,7 +10,6 @@ const ChatItem = ({
   title,
   avatar,
   lastMessage,
-  lastMessageTime,
   unreadCount,
   setCurrentChatId,
 }: Props) => {
