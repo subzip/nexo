@@ -1,7 +1,8 @@
 import MessageInput from '@/features/messages/MessageInput'
 import MessagesClient from '@/features/messages/MessagesClient'
-import { getMe } from '@/api/auth.api'
-import { getChatMessages } from '@/api/message.api'
+import { getMe } from '@/lib/api/auth.api'
+import { getChatMessages } from '@/lib/api/message.api'
+import Status from '@/ui/Status'
 import { cookies } from 'next/headers'
 
 type PageProps = {
@@ -19,7 +20,11 @@ const Chat = async ({ params }: PageProps) => {
 
   return (
     <div className="border w-full py-3 pl-5 flex flex-col h-full flex-1 min-h-0">
-      <p className="text-4xl">{username}</p>
+      <div className="gap-5 ml-62">
+        <p className="text-4xl">{username}</p>
+        <Status />
+      </div>
+
       <MessagesClient messages={messages} user={me} />
       <MessageInput sessionId={sessionId} />
     </div>

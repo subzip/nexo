@@ -10,9 +10,9 @@ export default async function Home() {
   if (!sessionId) redirect('/login')
 
   return (
-    <div className="dark:bg-black ml-70 mr-70">
+    <div className="dark:bg-black pl-5">
       <Header />
-      <main className="flex gap-12 mt-8">
+      <main className="flex gap-12 ">
         <ChatList />
         <div className="border w-full"></div>
       </main>

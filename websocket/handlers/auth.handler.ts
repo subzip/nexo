@@ -1,15 +1,17 @@
-import { getSession } from '@/server/services/auth.service'
-import { Message } from '../types'
+import { getSession } from '@/server/repositories/session.repository'
+import { AuthMessage } from '../types'
 import WebSocket from 'ws'
 
 export const setAuth = async (
-  payload: Message,
+  payload: AuthMessage,
   userSockets: Map<string, WebSocket>,
   socketUsers: WeakMap<WebSocket, string>,
   socket: WebSocket
 ) => {
   try {
-    const sessionId = payload.data.sessionId
+    const sessionId = payload.sessionId
+    if (!sessionId || sessionId.length === 0)
+      throw new Error('sessionId not valid')
 
     const session = await getSession(sessionId || '')
 

@@ -1,6 +1,6 @@
-import { MessageType } from '@/data/messages'
+import { TChatMessage } from '@/data/messages'
 
-interface Props extends MessageType {
+interface Props extends TChatMessage {
   userId: string
 }
 

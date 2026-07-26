@@ -1,5 +1,6 @@
 import { User } from '@/data/users'
-import { getMe, login } from '../api/auth.api'
+import { getMe, login } from '../lib/api/auth.api'
+import { getSession } from '@/server/repositories/session.repository'
 
 export const loginService = async (
   username: string,
@@ -20,16 +21,43 @@ export const authWS = async (
   socketRef: React.RefObject<WebSocket | null>,
   sessionId: string
 ) => {
-  if (socketRef.current === null) return
-  socketRef.current.onopen = (e) => {
-    console.log(e)
-    socketRef.current?.send(
+  const socket = socketRef.current
+  if (!socket) return
+
+  const sendAuth = () => {
+    socket.send(
       JSON.stringify({
         type: 'auth',
-        data: {
-          sessionId,
-        },
+        sessionId,
       })
     )
   }
+
+  if (socket.readyState === WebSocket.OPEN) sendAuth()
+  else if (socket.readyState === WebSocket.CONNECTING) {
+    socket.addEventListener('open', sendAuth, { once: true })
+  }
+}
+
+export const sendStatusToWS = async (
+  socketRef: React.RefObject<WebSocket | null>,
+  online: boolean,
+  lastSeen: string | null,
+  sessionId: string
+) => {
+  const user = await getMe(sessionId)
+  const socket = socketRef.current
+
+  if (!user || !socket) return
+
+  socket.send(
+    JSON.stringify({
+      type: 'presence',
+      data: {
+        online,
+        lastSeen,
+        userId: user.id,
+      },
+    })
+  )
 }

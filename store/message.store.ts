@@ -1,16 +1,16 @@
-import { MessageType } from '@/data/messages'
+import { TChatMessage } from '@/data/messages'
 import { create } from 'zustand'
 
 type MessageInstance = {
-  [chatId: string]: MessageType[]
+  [chatId: string]: TChatMessage[]
 }
 
 type MessageStore = {
   messagesByChatId: MessageInstance
   currentChatId: string | null
   setCurrentChatId: (chatId: string) => void
-  setMessagesByChatId: (chatId: string, messages: MessageType[]) => void
-  addMessage: (chatId: string, message: MessageType) => void
+  setMessagesByChatId: (chatId: string, messages: TChatMessage[]) => void
+  addMessage: (chatId: string, message: TChatMessage) => void
 }
 
 export const useMessageStore = create<MessageStore>((set) => ({
@@ -19,7 +19,7 @@ export const useMessageStore = create<MessageStore>((set) => ({
   setCurrentChatId: (chatId: string) => {
     set({ currentChatId: chatId })
   },
-  setMessagesByChatId: (chatId: string, messages: MessageType[]) => {
+  setMessagesByChatId: (chatId: string, messages: TChatMessage[]) => {
     set((state) => ({
       messagesByChatId: {
         ...state.messagesByChatId,
@@ -27,7 +27,7 @@ export const useMessageStore = create<MessageStore>((set) => ({
       },
     }))
   },
-  addMessage: (chatId: string, message: MessageType) => {
+  addMessage: (chatId: string, message: TChatMessage) => {
     set((state) => ({
       messagesByChatId: {
         ...state.messagesByChatId,

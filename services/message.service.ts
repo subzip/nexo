@@ -1,7 +1,7 @@
 import { useMessageStore } from '@/store/message.store'
-import { createMessage } from '../api/message.api'
+import { createMessage } from '../lib/api/message.api'
 import { useChatPreviewStore } from '@/store/chat.store'
-import { MessageType } from '@/data/messages'
+import { TChatMessage } from '@/data/messages'
 
 export const sendMessage = async (
   text: string,
@@ -21,12 +21,13 @@ export const sendMessage = async (
     return
   }
 
-  sendMessageToWS(response, socketRef)
+  //sendMessageToWS(response, socketRef)
 
   addMessageToStore(response)
+  return response
 }
 
-export const addMessageToStore = (response: MessageType) => {
+export const addMessageToStore = (response: TChatMessage) => {
   const chatId = useMessageStore.getState().currentChatId || ''
 
   useMessageStore.getState().addMessage(chatId, response)
@@ -35,16 +36,16 @@ export const addMessageToStore = (response: MessageType) => {
     .updateLastMessage(chatId, response.text, response.createdAt)
 }
 
-export const sendMessageToWS = async (
-  message: MessageType,
-  socketRef: React.RefObject<WebSocket | null>
-) => {
-  socketRef.current?.send(
-    JSON.stringify({
-      type: 'message',
-      data: {
-        message,
-      },
-    })
-  )
-}
+// export const sendMessageToWS = async (
+//   message: TChatMessage,
+//   socketRef: React.RefObject<WebSocket | null>
+// ) => {
+//   socketRef.current?.send(
+//     JSON.stringify({
+//       type: 'message',
+//       data: {
+//         message,
+//       },
+//     })
+//   )
+// }

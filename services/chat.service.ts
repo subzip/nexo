@@ -1,5 +1,6 @@
 import { ChatPreview } from '@/data/chatPreview'
 import { ChatPreviewStore } from '@/store/chat.store'
+import { usePresenceStore } from '@/store/presence.store'
 
 export const formatChatsList = (chats: ChatPreview[]): ChatPreviewStore[] => {
   const formattedChats = chats.map((el) => {
@@ -14,4 +15,16 @@ export const formatChatsList = (chats: ChatPreview[]): ChatPreviewStore[] => {
   })
 
   return formattedChats
+}
+
+export const addStatusToStore = (
+  userId: string,
+  online: boolean,
+  lastSeen: string | null
+) => {
+  const setOnline = usePresenceStore.getState().setOnline
+  const setLastSeen = usePresenceStore.getState().setLastSeen
+
+  setOnline(userId, online)
+  if (lastSeen) setLastSeen(userId, lastSeen)
 }

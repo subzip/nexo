@@ -1,3 +1,4 @@
+import { useWebSocket } from '@/features/ws/useWebSocket'
 import { authWS } from '@/services/auth.service'
 import { addMessageToStore, sendMessage } from '@/services/message.service'
 import React, { useEffect, useRef, useState } from 'react'
@@ -12,6 +13,7 @@ const InputMessage = ({ sessionId }: Props) => {
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState('')
   const [containterHeight, setContainerHeight] = useState(0)
+  const { send: sentToWs } = useWebSocket(sessionId)
 
   useEffect(() => {
     const textarea = inputRef.current
@@ -24,17 +26,17 @@ const InputMessage = ({ sessionId }: Props) => {
     setContainerHeight(textarea.scrollHeight)
   }, [text])
 
-  useEffect(() => {
-    socketRef.current = new WebSocket('ws://localhost:8080')
+  // useEffect(() => {
+  //   socketRef.current = new WebSocket('ws://localhost:8080')
 
-    authWS(socketRef, sessionId)
+  //   authWS(socketRef, sessionId)
 
-    socketRef.current.onmessage = (event) => {
-      const message = JSON.parse(event.data)
-      addMessageToStore(message.data)
-      console.log('msg got', message)
-    }
-  }, [])
+  //   socketRef.current.onmessage = (event) => {
+  //     const message = JSON.parse(event.data)
+  //     addMessageToStore(message.data)
+  //     console.log('msg got', message)
+  //   }
+  // }, [])
 
   return (
     <div
@@ -47,18 +49,20 @@ const InputMessage = ({ sessionId }: Props) => {
         rows={1}
         value={text}
         onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => {
+        onKeyDown={async (e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault()
-            sendMessage(text, socketRef)
+            const response = await sendMessage(text, socketRef)
+            sentToWs({ type: 'message', data: response })
             setText('')
           }
         }}
       />
       <div
         className="flex bg-purple-900 px-2.5 py-1 rounded-full cursor-pointer "
-        onClick={() => {
-          sendMessage(text, socketRef)
+        onClick={async () => {
+          const response = await sendMessage(text, socketRef)
+          sentToWs({ type: 'message', data: response })
           setText('')
         }}
       >

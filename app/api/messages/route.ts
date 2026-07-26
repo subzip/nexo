@@ -1,7 +1,7 @@
 import { MessageSend } from '@/data/messages'
-import { getCurrentUser } from '@/server/services/auth.service'
-import { getChatMessages } from '@/server/services/chat.service'
-import { createMessage } from '@/server/services/message.service'
+import { getChatMessages } from '@/server/repositories/chat.repositoty'
+import { createMessage } from '@/server/repositories/message.repository'
+import { getCurrentUser } from '@/server/repositories/session.repository'
 import { cookies } from 'next/headers'
 
 export async function GET(req: Request) {

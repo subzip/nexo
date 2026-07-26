@@ -1,11 +1,24 @@
-import { MessageType } from '@/data/messages'
+import { TChatMessage } from '@/data/messages'
 
-export type Data = {
-  sessionId?: string
-  message?: MessageType
+export type TPresence = {
+  online: boolean
+  lastSeen: string | null
+  userId: string
 }
 
-export type Message = {
-  type: string
-  data: Data
+export type AuthMessage = {
+  type: 'auth'
+  sessionId: string
 }
+
+export type ChatMessage = {
+  type: 'message'
+  data: TChatMessage
+}
+
+export type PresenceMessage = {
+  type: 'presence'
+  data: TPresence[] //array, cuz many users
+}
+
+export type WSMessage = AuthMessage | ChatMessage | PresenceMessage

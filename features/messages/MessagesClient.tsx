@@ -1,19 +1,20 @@
 'use client'
 
-import { MessageType } from '@/data/messages'
+import { TChatMessage } from '@/data/messages'
 import { User } from '@/data/users'
 import { useMessageStore } from '@/store/message.store'
 import Message from '@/ui/Message'
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 
 type Props = {
-  messages: MessageType[]
+  messages: TChatMessage[]
   user: User | null
 }
 
 const MessagesClient = ({ messages, user }: Props) => {
   const msgRef = useRef<HTMLDivElement>(null)
   const chatId = messages.length !== 0 ? messages[0].chatId : ''
+
   const setCurrentChatId = useMessageStore((state) => state.setCurrentChatId)
   const setMessagesByChatId = useMessageStore(
     (state) => state.setMessagesByChatId
