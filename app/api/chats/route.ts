@@ -1,4 +1,4 @@
-import { getChatPreviews } from '@/server/services/chat.service'
+import { getChatPreviews } from '@/server/repositories/chat.repositoty'
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

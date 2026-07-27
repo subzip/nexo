@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@/server/services/auth.service'
+import { getCurrentUser } from '@/server/repositories/session.repository'
 
 export async function POST(req: Request) {
   try {

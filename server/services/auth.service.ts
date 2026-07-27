@@ -1,42 +1,23 @@
-import { prisma } from '@/lib/prisma'
+import { cookies } from 'next/headers'
+import { findUser } from '../repositories/user.repository'
+import { createSession } from '../repositories/session.repository'
 
-export const findUser = async (username: string, password: string) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      username,
-      password,
-    },
+export const login = async (req: Request) => {
+  const { username, password } = await req.json()
+
+  const response = await findUser(username, password)
+
+  if (!response) throw new Error('no user')
+
+  const cookieStore = await cookies()
+
+  const session = await createSession(response.id)
+
+  cookieStore.set('auth', session.id, {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+    path: '/',
   })
-
-  return user
-}
-
-export const getCurrentUser = async (sessionId: string) => {
-  const session = await prisma.session.findUnique({
-    where: {
-      id: sessionId,
-    },
-    include: {
-      user: true,
-    },
-  })
-
-  return session?.user ?? null
-}
-
-export const createSession = async (userId: string) => {
-  return prisma.session.create({
-    data: {
-      userId,
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-    },
-  })
-}
-
-export const getSession = async (sessionId: string) => {
-  return prisma.session.findUnique({
-    where: {
-      id: sessionId,
-    },
-  })
+  return response
 }
