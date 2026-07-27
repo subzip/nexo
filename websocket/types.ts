@@ -18,7 +18,7 @@ export type ChatMessage = {
 
 export type PresenceMessage = {
   type: 'presence'
-  data: TPresence[] //array, cuz many users
+  data: TPresence
 }
 
 export type WSMessage = AuthMessage | ChatMessage | PresenceMessage

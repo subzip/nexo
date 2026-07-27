@@ -1,6 +1,7 @@
 'use client'
 
 import { authWS, sendStatusToWS } from '@/services/auth.service'
+import { addStatusToStore } from '@/services/chat.service'
 import { useChatPreviewStore } from '@/store/chat.store'
 import { useMessageStore } from '@/store/message.store'
 import { WSMessage } from '@/websocket/types'

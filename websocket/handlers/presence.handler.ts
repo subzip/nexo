@@ -1,6 +1,7 @@
 import { getPresenceContacts } from '@/server/repositories/chat.repositoty'
 import { getSession } from '@/server/repositories/session.repository'
 import WebSocket from 'ws'
+import { TPresence } from '../types'
 
 export const setPresenceSubscribers = async (
   presenceSubscribers: Map<string, Set<string>>,
@@ -24,12 +25,19 @@ export const sendPresenceToSubscribers = (
   lastSeen: string | null
 ) => {
   const subscribers = presenceSubscribers.get(userId)
-
+  const presences = {
+    type: 'presence',
+    data: [] as TPresence[],
+  }
   if (!subscribers) return
 
   subscribers.forEach((el) => {
     if (!userSockets.get(el)) return
-
+    presences.data.push({
+      userId,
+      online: status,
+      lastSeen,
+    })
     userSockets.get(el)?.send(
       JSON.stringify({
         type: 'presence',
