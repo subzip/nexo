@@ -1,16 +1,32 @@
 'use client'
 
-import React from 'react'
+import React, { createContext, useContext } from 'react'
 import { useWebSocket } from './useWebSocket'
 
-type Props = {
+const WebSocketContext = createContext<{
+  send: (payload: unknown) => void
+} | null>(null)
+
+export const WebSocketProvider = ({
+  sessionId,
+  children,
+}: {
   sessionId: string
   children: React.ReactNode
+}) => {
+  const ws = useWebSocket(sessionId)
+
+  return (
+    <WebSocketContext.Provider value={ws}>{children}</WebSocketContext.Provider>
+  )
 }
 
-const WebSocketProvider = ({ sessionId, children }: Props) => {
-  useWebSocket(sessionId)
-  return children
-}
+export const useWS = () => {
+  const context = useContext(WebSocketContext)
 
-export default WebSocketProvider
+  if (!context) {
+    throw new Error('useWS must be used inside WebSocketProvider')
+  }
+
+  return context
+}

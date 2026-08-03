@@ -1,6 +1,7 @@
 import { User } from '@/data/users'
 import { getMe, login } from '../lib/api/auth.api'
 import { getSession } from '@/server/repositories/session.repository'
+import { findUserByUsername } from '@/server/repositories/user.repository'
 
 export const loginService = async (
   username: string,

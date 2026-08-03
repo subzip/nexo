@@ -1,6 +1,6 @@
-import { useWebSocket } from '@/features/ws/useWebSocket'
-import { authWS } from '@/services/auth.service'
-import { addMessageToStore, sendMessage } from '@/services/message.service'
+import { useWS } from '@/features/ws/WebSocketProvider'
+
+import { sendMessage } from '@/services/message.service'
 import React, { useEffect, useRef, useState } from 'react'
 
 type Props = {
@@ -8,12 +8,12 @@ type Props = {
   sessionId: string
 }
 
-const InputMessage = ({ sessionId }: Props) => {
+const InputMessage = () => {
   const socketRef = useRef<WebSocket | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState('')
   const [containterHeight, setContainerHeight] = useState(0)
-  const { send: sentToWs } = useWebSocket(sessionId)
+  const { send: sentToWs } = useWS()
 
   useEffect(() => {
     const textarea = inputRef.current

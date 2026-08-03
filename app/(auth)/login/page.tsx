@@ -47,7 +47,9 @@ const Login = () => {
                   username: user.username,
                   avatar: user.avatar,
                 })
+
                 router.push('/')
+                router.refresh()
               } else {
                 setInvalid(true)
               }

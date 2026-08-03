@@ -21,4 +21,22 @@ export type PresenceMessage = {
   data: TPresence
 }
 
-export type WSMessage = AuthMessage | ChatMessage | PresenceMessage
+export type PresenceInit = {
+  type: 'presence:init'
+  data: TPresence[]
+}
+
+export type PresenceUpdate = {
+  type: 'presence:update'
+  data: TPresence
+}
+
+export type WSMessage =
+  AuthMessage | ChatMessage | PresenceMessage | PresenceInit | PresenceUpdate
+
+export type TUser = {
+  id: string
+  username: string
+  avatar: string | null
+  lastSeen: Date | null
+}

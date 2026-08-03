@@ -1,52 +1,77 @@
-import { getPresenceContacts } from '@/server/repositories/chat.repositoty'
-import { getSession } from '@/server/repositories/session.repository'
+import { User } from '@/data/users'
+import { TUser } from '../types'
 import WebSocket from 'ws'
-import { TPresence } from '../types'
+import { setLastSeen } from '@/server/repositories/presence.repository'
 
-export const setPresenceSubscribers = async (
-  presenceSubscribers: Map<string, Set<string>>,
-  sessionId: string
-) => {
-  const session = await getSession(sessionId)
-  if (!session) return
-  const contacts = await getPresenceContacts(session.userId)
+export async function sendPresenceOnline(
+  userId: string,
+  userContacts: Map<string, string[]>,
+  userSockets: Map<string, Set<WebSocket>>
+) {
+  const contacts = userContacts.get(userId)
 
-  presenceSubscribers.set(
-    session.userId,
-    new Set(contacts.map((el) => el.userId))
-  )
+  const user = await setLastSeen(userId, null)
+
+  if (!contacts) return
+
+  contacts.forEach((contactId) => {
+    const sockets = userSockets.get(contactId)
+
+    if (!sockets) return
+
+    sockets.forEach((socket) => {
+      socket.send(
+        JSON.stringify({
+          type: 'presence:update',
+          data: {
+            userId,
+            online: true,
+            lastSeen: null,
+          },
+        })
+      )
+    })
+  })
 }
 
-export const sendPresenceToSubscribers = (
-  presenceSubscribers: Map<string, Set<string>>,
+export async function sendPresenceOffline(
   userId: string,
-  userSockets: Map<string, WebSocket>,
-  status: boolean,
-  lastSeen: string | null
-) => {
-  const subscribers = presenceSubscribers.get(userId)
-  const presences = {
-    type: 'presence',
-    data: [] as TPresence[],
-  }
-  if (!subscribers) return
+  userContacts: Map<string, string[]>,
+  userSockets: Map<string, Set<WebSocket>>
+) {
+  const contacts = userContacts.get(userId)
 
-  subscribers.forEach((el) => {
-    if (!userSockets.get(el)) return
-    presences.data.push({
-      userId,
-      online: status,
-      lastSeen,
+  const user = await setLastSeen(userId, new Date())
+
+  if (!contacts) return
+
+  contacts.forEach((contactId) => {
+    const sockets = userSockets.get(contactId)
+
+    if (!sockets) return
+
+    sockets.forEach((socket) => {
+      socket.send(
+        JSON.stringify({
+          type: 'presence:update',
+          data: {
+            userId,
+            online: false,
+            lastSeen: new Date(),
+          },
+        })
+      )
     })
-    userSockets.get(el)?.send(
-      JSON.stringify({
-        type: 'presence',
-        data: {
-          userId,
-          online: status,
-          lastSeen,
-        },
-      })
-    )
   })
+}
+
+export const createPresenceSnapshot = (
+  contacts: TUser[],
+  userSockets: Map<string, Set<WebSocket>>
+) => {
+  return contacts.map((contact) => ({
+    userId: contact.id,
+    online: userSockets.has(contact.id),
+    lastSeen: contact.lastSeen,
+  }))
 }

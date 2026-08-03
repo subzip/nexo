@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import Header from '@/ui/Header'
 import ChatList from '@/features/chats/ChatsList'
-import WebSocketProvider from '@/features/ws/WebSocketProvider'
+import { WebSocketProvider } from '@/features/ws/WebSocketProvider'
 import { cookies } from 'next/headers'
 
 const geistSans = Geist({

@@ -4,7 +4,7 @@ import WebSocket from 'ws'
 
 export const sendMessageToUser = async (
   payload: ChatMessage,
-  userSockets: Map<string, WebSocket>
+  userSockets: Map<string, Set<WebSocket>>
 ) => {
   if (!payload.data) return
   const chatId = payload.data.chatId
@@ -18,6 +18,9 @@ export const sendMessageToUser = async (
     const addressSocket = userSockets.get(el.userId)
     if (!addressSocket) return
 
-    addressSocket.send(JSON.stringify({ type: 'message', data: payload.data }))
+    addressSocket.forEach((socket) => {
+      console.log('Send to', el.userId, 'connections:', addressSocket.size)
+      socket.send(JSON.stringify({ type: 'message', data: payload.data }))
+    })
   })
 }
