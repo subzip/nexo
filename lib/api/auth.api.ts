@@ -15,6 +15,21 @@ export const login = async (username: string, password: string) => {
   return null
 }
 
+export const signup = async (username: string, password: string) => {
+  const response = await fetch(`http://localhost:3000/api/auth/signup`, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+  })
+
+  if (response.status === 200) return response.json()
+
+  return null
+}
+
 export const getMe = async (sessionId: string): Promise<User | null> => {
   const response = await fetch(`http://localhost:3000/api/auth/me`, {
     method: 'POST',

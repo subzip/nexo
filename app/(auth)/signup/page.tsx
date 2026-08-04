@@ -1,22 +1,21 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { loginService } from '@/services/auth.service'
+import { singUpService } from '@/services/auth.service'
 import { useAuthStore } from '@/store/auth.store'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
-const Login = () => {
-  const [invalid, setInvalid] = useState(false)
+const Signup = () => {
   const router = useRouter()
   const setUser = useAuthStore((state) => state.setUser)
   const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
-
+  const [invalid, setInvalid] = useState(false)
   return (
     <div className="flex flex-col w-[30vw] mt-0 m-auto gap-5 h-screen justify-center items-center">
       <p className={`${!invalid ? 'invisible' : 'visible'} text-red-800`}>
-        Invalid Login or Password
+        User exists
       </p>
       <Input
         placeholder="Username"
@@ -40,14 +39,13 @@ const Login = () => {
           className="w-full cursor-pointer"
           onClick={async () => {
             if (password.length !== 0 && login.length !== 0) {
-              const user = await loginService(login, password)
+              const user = await singUpService(login, password)
               if (user) {
                 setUser({
                   id: user.id,
                   username: user.username,
                   avatar: user.avatar,
                 })
-
                 router.push('/')
                 router.refresh()
               } else {
@@ -56,14 +54,11 @@ const Login = () => {
             }
           }}
         >
-          Login
+          Sign up
         </button>
       </div>
-      <p className="cursor-pointer" onClick={() => router.push('/signup')}>
-        Sign up
-      </p>
     </div>
   )
 }
 
-export default Login
+export default Signup

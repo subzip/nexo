@@ -1,5 +1,5 @@
 import { User } from '@/data/users'
-import { getMe, login } from '../lib/api/auth.api'
+import { getMe, login, signup } from '../lib/api/auth.api'
 import { getSession } from '@/server/repositories/session.repository'
 import { findUserByUsername } from '@/server/repositories/user.repository'
 
@@ -8,7 +8,12 @@ export const loginService = async (
   password: string
 ): Promise<User> => {
   const response = await login(username, password)
-  console.log(response)
+
+  return response
+}
+
+export const singUpService = async (username: string, password: string) => {
+  const response = await signup(username, password)
   return response
 }
 
