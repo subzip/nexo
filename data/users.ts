@@ -7,3 +7,10 @@ export type User = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type SearchUser = {
+  id: string
+  username: string
+  avatar: string | null
+  online: boolean
+}
