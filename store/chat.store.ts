@@ -1,9 +1,9 @@
-import { MessageType } from '@/data/messages'
 import { create } from 'zustand'
 
 export type ChatPreviewStore = {
   chatId: string
   title: string
+  participantId: string
   avatar: string | null
   lastMessage: string | null
   lastMessageTime: Date

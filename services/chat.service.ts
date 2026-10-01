@@ -1,5 +1,5 @@
 import { ChatPreview } from '@/data/chatPreview'
-import { ChatPreviewStore } from '@/store/chat.store'
+import { ChatPreviewStore, useChatPreviewStore } from '@/store/chat.store'
 import { usePresenceStore } from '@/store/presence.store'
 
 export const formatChatsList = (chats: ChatPreview[]): ChatPreviewStore[] => {
@@ -27,4 +27,11 @@ export const addStatusToStore = (
 
   setOnline(userId, online)
   if (lastSeen) setLastSeen(userId, lastSeen)
+}
+
+export const getChatId = (username: string) => {
+  const chat = useChatPreviewStore
+    .getState()
+    .chats.find((chat) => chat.title === username)
+  return chat?.chatId
 }

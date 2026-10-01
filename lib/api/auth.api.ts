@@ -1,45 +1,31 @@
 import { User } from '@/data/users'
+import { api } from './api'
 
 export const login = async (username: string, password: string) => {
-  const response = await fetch(`http://localhost:3000/api/auth/login`, {
+  return await api<User>(`/auth/login`, {
     method: 'POST',
-    credentials: 'include',
     body: JSON.stringify({
       username,
       password,
     }),
   })
-
-  if (response.status === 200) return response.json()
-
-  return null
 }
 
 export const signup = async (username: string, password: string) => {
-  const response = await fetch(`http://localhost:3000/api/auth/signup`, {
+  return await api<User>(`/auth/signup`, {
     method: 'POST',
-    credentials: 'include',
     body: JSON.stringify({
       username,
       password,
     }),
   })
-
-  if (response.status === 200) return response.json()
-
-  return null
 }
 
-export const getMe = async (sessionId: string): Promise<User | null> => {
-  const response = await fetch(`http://localhost:3000/api/auth/me`, {
-    method: 'POST',
-    credentials: 'include',
-    body: JSON.stringify({
-      sessionId,
-    }),
+export const getMe = async (): Promise<Pick<
+  User,
+  'id' | 'username' | 'avatar'
+> | null> => {
+  return await api<Pick<User, 'id' | 'username' | 'avatar'>>(`/auth/me`, {
+    method: 'GET',
   })
-
-  if (response.status === 200) return response.json()
-
-  return null
 }

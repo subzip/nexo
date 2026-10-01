@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 export default async function Home() {
   const cookieStore = await cookies()
-  const sessionId = cookieStore.get('auth')
+  const sessionId = cookieStore.get('session')
 
   if (!sessionId) redirect('/login')
 

@@ -1,13 +1,9 @@
 import { ChatPreview } from '@/data/chatPreview'
 
-export const getChatPreview = async (
-  userId: string
-): Promise<Array<ChatPreview>> => {
-  const response = await fetch(
-    `http://localhost:3000/api/chats?userId=${userId}`
-  )
+import { apiServer } from './api.server'
 
-  if (response.status === 400) console.log('Error')
-
-  return response.json()
+export const getChatPreview = async (): Promise<ChatPreview[]> => {
+  return await apiServer<ChatPreview[]>(`/conversations/preview`, {
+    method: 'GET',
+  })
 }
