@@ -19,7 +19,7 @@ const ChatItem = ({
       onClick={() => setCurrentChatId(chatId)}
     >
       <Image
-        src={avatar || ''}
+        src={avatar || 'avatar.svg'}
         alt="avatar"
         width={56}
         height={56}

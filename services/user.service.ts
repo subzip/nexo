@@ -1,9 +1,10 @@
-import { findUserByUsername } from '@/server/repositories/user.repository'
+import { useChatPreviewStore } from '@/store/chat.store'
 
-export const getUserId = async (username: string) => {
-  const user = await findUserByUsername(username)
-
+export const getUserId = (username: string) => {
+  const user =
+    useChatPreviewStore.getState().chats.find((el) => el.title === username) ||
+    ''
   if (!user) return
 
-  return user.id
+  return user.participantId
 }

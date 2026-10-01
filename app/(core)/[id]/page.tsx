@@ -1,24 +1,26 @@
 import MessageInput from '@/features/messages/MessageInput'
 import MessagesClient from '@/features/messages/MessagesClient'
-import { getMe } from '@/lib/api/auth.api'
-import { getChatMessages } from '@/lib/api/message.api'
 import { getUserId } from '@/services/user.service'
 import Status from '@/ui/Status'
-import { cookies } from 'next/headers'
+import { apiServer } from '@/lib/api/api.server'
+import type { TChatMessage } from '@/data/messages'
 
 type PageProps = {
   params: Promise<{ id: string }>
 }
 
 const Chat = async ({ params }: PageProps) => {
-  const cookieStore = await cookies()
-  const sessionId = cookieStore.get('auth')?.value || ''
   const { id } = await params
   const username = id.slice(3)
-  const me = await getMe(sessionId)
-  const participantId = await getUserId(username)
+  console.log(username)
+  const participantId = getUserId(username)
 
-  const messages = await getChatMessages(username, me?.username || '')
+  const messages = await apiServer<TChatMessage[]>(
+    `/messages?username=${username}`,
+    {
+      method: 'GET',
+    }
+  )
 
   return (
     <div className="border w-full py-3 pl-5 flex flex-col h-full flex-1 min-h-0">
@@ -27,8 +29,8 @@ const Chat = async ({ params }: PageProps) => {
         <Status participantId={participantId || ''} />
       </div>
 
-      <MessagesClient messages={messages} user={me} />
-      <MessageInput sessionId={sessionId} />
+      <MessagesClient messages={messages} participantId={participantId || ''} />
+      <MessageInput />
     </div>
   )
 }

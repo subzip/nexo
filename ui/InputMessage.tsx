@@ -3,11 +3,6 @@ import { useWS } from '@/features/ws/WebSocketProvider'
 import { sendMessage } from '@/services/message.service'
 import React, { useEffect, useRef, useState } from 'react'
 
-type Props = {
-  userId?: string
-  sessionId: string
-}
-
 const InputMessage = () => {
   const socketRef = useRef<WebSocket | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -25,18 +20,6 @@ const InputMessage = () => {
     textarea.style.height = `${textarea.scrollHeight}px`
     setContainerHeight(textarea.scrollHeight)
   }, [text])
-
-  // useEffect(() => {
-  //   socketRef.current = new WebSocket('ws://localhost:8080')
-
-  //   authWS(socketRef, sessionId)
-
-  //   socketRef.current.onmessage = (event) => {
-  //     const message = JSON.parse(event.data)
-  //     addMessageToStore(message.data)
-  //     console.log('msg got', message)
-  //   }
-  // }, [])
 
   return (
     <div

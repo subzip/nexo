@@ -2,18 +2,20 @@
 
 import { TChatMessage } from '@/data/messages'
 import { User } from '@/data/users'
+import { useAuthStore } from '@/store/auth.store'
 import { useMessageStore } from '@/store/message.store'
 import Message from '@/ui/Message'
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 
 type Props = {
   messages: TChatMessage[]
-  user: User | null
+  participantId: string | null
 }
 
-const MessagesClient = ({ messages, user }: Props) => {
+const MessagesClient = ({ messages, participantId }: Props) => {
   const msgRef = useRef<HTMLDivElement>(null)
-  const chatId = messages.length !== 0 ? messages[0].chatId : ''
+  const chatId = useMessageStore((state) => state.currentChatId) || ''
+  const userId = useAuthStore((state) => state.user?.id)
 
   const setCurrentChatId = useMessageStore((state) => state.setCurrentChatId)
   const setMessagesByChatId = useMessageStore(
@@ -25,6 +27,7 @@ const MessagesClient = ({ messages, user }: Props) => {
   useEffect(() => {
     setMessagesByChatId(chatId, messages)
     setCurrentChatId(chatId)
+    console.log(userId)
   }, [chatId, messages])
 
   useLayoutEffect(() => {
@@ -33,8 +36,8 @@ const MessagesClient = ({ messages, user }: Props) => {
 
   return (
     <div
-      className="messages 
-      flex flex-col mt-10 px-15 pr-57.5 pl-62.5 pb-12 scrollbar-thin scrollbar-thumb-slate-400 
+      className="messages
+      flex flex-col mt-10 px-15 pr-57.5 pl-62.5 pb-12 scrollbar-thin scrollbar-thumb-slate-400
       scrollbar-track-slate-100 scrollbar-thumb-rounded-full hover:scrollbar-thumb-slate-500
       flex-1 overflow-y-auto min-h-0 scrollbar-gutter-stable "
     >
@@ -47,7 +50,7 @@ const MessagesClient = ({ messages, user }: Props) => {
           text={el.text}
           createdAt={el.createdAt}
           senderId={el.senderId}
-          userId={user?.id || ''}
+          userId={userId || ''}
         />
       ))}
       <div ref={msgRef} />
