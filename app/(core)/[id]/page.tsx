@@ -4,6 +4,7 @@ import { getUserId } from '@/services/user.service'
 import Status from '@/ui/Status'
 import { apiServer } from '@/lib/api/api.server'
 import type { TChatMessage } from '@/data/messages'
+import { SocketConnection } from '@/features/ws/SocketConnection'
 
 type PageProps = {
   params: Promise<{ id: string }>
@@ -31,6 +32,7 @@ const Chat = async ({ params }: PageProps) => {
 
       <MessagesClient messages={messages} participantId={participantId || ''} />
       <MessageInput />
+      <SocketConnection />
     </div>
   )
 }

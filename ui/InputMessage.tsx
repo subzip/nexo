@@ -1,5 +1,3 @@
-import { useWS } from '@/features/ws/WebSocketProvider'
-
 import { sendMessage } from '@/services/message.service'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -8,7 +6,6 @@ const InputMessage = () => {
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState('')
   const [containterHeight, setContainerHeight] = useState(0)
-  const { send: sentToWs } = useWS()
 
   useEffect(() => {
     const textarea = inputRef.current
@@ -36,7 +33,7 @@ const InputMessage = () => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault()
             const response = await sendMessage(text, socketRef)
-            sentToWs({ type: 'message', data: response })
+
             setText('')
           }
         }}
@@ -45,7 +42,7 @@ const InputMessage = () => {
         className="flex bg-purple-900 px-2.5 py-1 rounded-full cursor-pointer "
         onClick={async () => {
           const response = await sendMessage(text, socketRef)
-          sentToWs({ type: 'message', data: response })
+
           setText('')
         }}
       >
