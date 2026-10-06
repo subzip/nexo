@@ -5,6 +5,7 @@ export type User = {
   avatar: string
   createdAt: Date
   updatedAt: Date
+  lastSeen: Date | null
 }
 
 export type SearchUser = {

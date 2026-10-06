@@ -11,7 +11,7 @@ type PresenceStore = {
   presenceByUserId: PresenceInstance
   setPresences: (presences: PresenceInstance) => void
   setOnline: (userId: string, online: boolean) => void
-  setLastSeen: (userId: string, lastSeen: string) => void
+  setLastSeen: (userId: string, lastSeen: string | null) => void
 }
 
 export const usePresenceStore = create<PresenceStore>((set) => ({
@@ -30,7 +30,7 @@ export const usePresenceStore = create<PresenceStore>((set) => ({
       },
     }))
   },
-  setLastSeen: (userId: string, lastSeen: string) => {
+  setLastSeen: (userId: string, lastSeen: string | null) => {
     set((state) => ({
       presenceByUserId: {
         ...state.presenceByUserId,
