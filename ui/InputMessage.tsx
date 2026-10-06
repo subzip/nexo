@@ -1,14 +1,10 @@
-import { useWS } from '@/features/ws/WebSocketProvider'
-
-import { sendMessage } from '@/services/message.service'
+import { sendMessageWs } from '@/lib/ws/message.ws'
 import React, { useEffect, useRef, useState } from 'react'
 
 const InputMessage = () => {
-  const socketRef = useRef<WebSocket | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState('')
   const [containterHeight, setContainerHeight] = useState(0)
-  const { send: sentToWs } = useWS()
 
   useEffect(() => {
     const textarea = inputRef.current
@@ -32,21 +28,23 @@ const InputMessage = () => {
         rows={1}
         value={text}
         onChange={(e) => setText(e.target.value)}
-        onKeyDown={async (e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
+        onKeyDown={(e) => {
+          const trimmedText = text.trim()
+          if (e.key === 'Enter' && !e.shiftKey && trimmedText.length > 0) {
             e.preventDefault()
-            const response = await sendMessage(text, socketRef)
-            sentToWs({ type: 'message', data: response })
+            sendMessageWs(trimmedText)
             setText('')
           }
         }}
       />
       <div
         className="flex bg-purple-900 px-2.5 py-1 rounded-full cursor-pointer "
-        onClick={async () => {
-          const response = await sendMessage(text, socketRef)
-          sentToWs({ type: 'message', data: response })
-          setText('')
+        onClick={() => {
+          const trimmedText = text.trim()
+          if (trimmedText.length > 0) {
+            sendMessageWs(trimmedText)
+            setText('')
+          }
         }}
       >
         {'>'}

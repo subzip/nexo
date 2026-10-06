@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-
-import { WebSocketProvider } from '@/features/ws/WebSocketProvider'
-import { cookies } from 'next/headers'
+import { SocketConnection } from '@/features/ws/SocketConnection'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,16 +23,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = await cookies()
-  const sessionId = cookieStore.get('auth')?.value || ''
-
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} dark max-h-screen antialiased`}
     >
       <body className="flex flex-col h-dvh" suppressHydrationWarning>
-        <WebSocketProvider sessionId={sessionId}>{children}</WebSocketProvider>
+        {children}
+        <SocketConnection />
       </body>
     </html>
   )

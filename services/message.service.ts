@@ -2,33 +2,32 @@ import { useMessageStore } from '@/store/message.store'
 import { createMessage } from '../lib/api/message.api'
 import { useChatPreviewStore } from '@/store/chat.store'
 import { TChatMessage } from '@/data/messages'
+import socket from '@/lib/socket'
 
 export const sendMessage = async (
   text: string,
   socketRef: React.RefObject<WebSocket | null>
 ) => {
-  const chatId = useMessageStore.getState().currentChatId || ''
-
-  const message = {
-    chatId,
-    text,
-  }
-
-  const response = await createMessage(message)
-
-  if (!response) {
-    console.log('msg error')
-    return
-  }
-
-  //sendMessageToWS(response, socketRef)
-
-  addMessageToStore(response)
-  return response
+  // const chatId = useMessageStore.getState().currentChatId || ''
+  // const message = {
+  //   chatId,
+  //   text,
+  // }
+  // socket.emit('chat:send', message)
+  // const response = await createMessage(message)
+  // if (!response) {
+  //   console.log('msg error')
+  //   return
+  // }
+  // //sendMessageToWS(response, socketRef)
+  // addMessageToStore(response)
+  // return response
 }
 
 export const addMessageToStore = (response: TChatMessage) => {
-  const chatId = useMessageStore.getState().currentChatId || ''
+  const chatId = useMessageStore.getState().currentChatId
+
+  if (!chatId) return
 
   useMessageStore.getState().addMessage(chatId, response)
   useChatPreviewStore
